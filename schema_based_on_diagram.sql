@@ -6,6 +6,8 @@ CREATE TABLE patients (
   CONSTRAINT kf_patients FOREIGN KEY(id) REFERENCES medical_histories(patient_id) ON DELETE CASCADE
 );
 
+
+
 CREATE TABLE medical_histories (
   id INT GENERATED ALWAYS AS IDENTITY(MINVALUE 0 START WITH 0 CACHE 20) NOT NULL,
   PRIMARY KEY (id),
@@ -14,6 +16,8 @@ CREATE TABLE medical_histories (
   status VARCHAR,
   CONSTRAINT kf_treatments FOREIGN KEY(id) REFERENCES treatments(treatment_id) ON DELETE CASCADE
 );
+
+CREATE INDEX medical_histories_patient_id_index ON medical_histories(patient_id);
 
 CREATE TABLE invoices (
   id INT GENERATED ALWAYS AS IDENTITY(MINVALUE 0 START WITH 0 CACHE 20) NOT NULL,
@@ -26,6 +30,8 @@ CREATE TABLE invoices (
   CONSTRAINT kf_invoice_items FOREIGN KEY(id) REFERENCES invoice_items(invoice_id) ON DELETE CASCADE
 );
 
+CREATE INDEX invoices_medical_history_id_index ON invoices(medical_history_id);
+
 CREATE TABLE invoice_items (
   id INT GENERATED ALWAYS AS IDENTITY(MINVALUE 0 START WITH 0 CACHE 20) NOT NULL,
   PRIMARY KEY (id),
@@ -36,11 +42,19 @@ CREATE TABLE invoice_items (
   treatment_id INT,
 );
 
+CREATE INDEX invoice_items_treatment_id_index ON invoice_items(treatment_id);
+
 CREATE TABLE treatments (
   id INT GENERATED ALWAYS AS IDENTITY(MINVALUE 0 START WITH 0 CACHE 20) NOT NULL,
   PRIMARY KEY (id),
   type VARCHAR,
   name VARCHAR
   CONSTRAINT kf_invoice_items FOREIGN KEY(id) REFERENCES invoice_items(treatment_id) ON DELETE CASCADE
+);
+
+CREATE TABLE medical_history_treatments (
+    medical_history_id  INT,
+    treatment_id     INT,
+    PRIMARY KEY (medical_history_id, treatment_id)
 );
 
