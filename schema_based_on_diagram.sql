@@ -6,8 +6,6 @@ CREATE TABLE patients (
   CONSTRAINT kf_patients FOREIGN KEY(id) REFERENCES medical_histories(patient_id) ON DELETE CASCADE
 );
 
-CONSTRAINT kf_species FOREIGN KEY(species_id) REFERENCES species(id) ON DELETE CASCADE, 
-
 CREATE TABLE medical_histories (
   id INT GENERATED ALWAYS AS IDENTITY(MINVALUE 0 START WITH 0 CACHE 20) NOT NULL,
   PRIMARY KEY (id),
